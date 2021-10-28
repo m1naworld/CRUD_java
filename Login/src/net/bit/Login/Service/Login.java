@@ -1,6 +1,6 @@
 package net.bit.Login.Service;
 
-
+import java.util.HashMap;
 import java.sql.*;
 import net.bit.Login.DAO.*;
 
@@ -55,6 +55,12 @@ public class Login {
 		} //while end
 		return false;	
 }//method end
+	
+	public HashMap SuccessLogin() {
+		HashMap<String, String> map = new HashMap();
+		map.put(id, password);
+		return map;
+	}
 	
 
 }// class end
