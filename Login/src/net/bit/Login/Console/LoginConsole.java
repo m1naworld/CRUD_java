@@ -1,6 +1,9 @@
 package net.bit.Login.Console;
 
 import java.util.Map.Entry;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +23,7 @@ public class LoginConsole {
 
 	}
 	
-	public void ID() throws ClassNotFoundException, SQLException {
+	public void ID() throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
 		while(true) {
 			System.out.print("아이디: ");
 			String id = sc.next();
@@ -47,10 +50,10 @@ public class LoginConsole {
 
 
 	
-	public void Join() throws ClassNotFoundException, SQLException{
+	public void Join() throws ClassNotFoundException, SQLException, NoSuchAlgorithmException{
 		while(true) {
 		System.out.print("아이디: ");
-		String joinid = sc.nextLine();
+		String id = sc.nextLine();
 		boolean idcheak = new Join(id).IDCheak();
 		if(idcheak) {
 			System.out.println("아이디가 중복되었습니다.");
@@ -86,13 +89,15 @@ public class LoginConsole {
 				if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("M")) {
 					new Join(id, pwd1, email, phone, gender).AllInsert();
 					System.out.println("회원가입에 성공하였습니다! ");
-					
 					break;
-				}else {
+				}else{
 					System.out.println("성별을 F/M 혹은"
-							+ " f/m으로만 입력해주세요 ");
+							+ " f/m으로만 입력해주세요! ");
 					System.out.print("성별(F/M): ");
 					gender = sc.nextLine();
+					new Join(id, pwd1, email, phone, gender).AllInsert();
+					System.out.println("회원가입에 성공하였습니다! ");
+					break;
 				}
 			}else {
 				System.out.println("비밀번호가 일치하지 않습니다. 다시입력해주세요! ");
@@ -103,7 +108,7 @@ public class LoginConsole {
 	} // cheak end
 } // join method end
 	
-	public void Revise() throws ClassNotFoundException, SQLException {
+	public void Revise() throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
 		try {
 		String id;
 		String password;
@@ -123,7 +128,10 @@ public class LoginConsole {
 				String rid = sc.next();
 				System.out.print("비밀번호: ");
 				String rpwd = sc.next();
-				if(user.containsKey(rid) && user.containsValue(rpwd)) {
+				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				md.update(rpwd.getBytes());
+				String hex = String.format("%064x", new BigInteger(1, md.digest()));
+				if(user.containsKey(rid) && user.containsValue(hex)) {
 					System.out.print("1.비밀번호수정 2.이메일수정 3.폰번호수정 4.취소: ");
 					int num = sc.nextInt();
 					switch(num) {

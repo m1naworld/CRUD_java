@@ -1,6 +1,9 @@
 package net.bit.Login.Service;
 
 import java.util.HashMap;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import net.bit.Login.DAO.*;
 
@@ -17,9 +20,13 @@ public class Login {
 		this.id = id;
 	}
 	
-	public Login(String id, String password) {
+	public Login(String id, String password) throws NoSuchAlgorithmException {
 		this.id = id;
-		this.password = password;
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes());
+		String hex = String.format("%064x", new BigInteger(1, md.digest()));
+		this.password = hex;
+		
 		
 	}
 

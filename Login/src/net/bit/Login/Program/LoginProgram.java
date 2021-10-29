@@ -1,5 +1,6 @@
 package net.bit.Login.Program;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Scanner;
 import net.bit.Login.Console.*;
@@ -7,9 +8,9 @@ import net.bit.Login.Console.*;
 public class LoginProgram {
 	private static LoginConsole console;
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
 		console = new LoginConsole();
-		try {
+//		try {
 		while(true) {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("1.로그인 2.회원가입 3.회원정보수정: 4.로그아웃: ");
@@ -31,11 +32,10 @@ public class LoginProgram {
 			console.LogOut();
 			break;
 		}
-		
 		}
-		}catch(Exception ex) {
-			System.out.println("숫자를 입력해주세요! ");
-		}
+//		}catch(Exception ex) {
+//			System.out.println("숫자를 입력해주세요! ");
+//		}
 		
 		
 		

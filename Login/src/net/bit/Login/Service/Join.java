@@ -1,5 +1,8 @@
 package net.bit.Login.Service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -20,18 +23,24 @@ public class Join {
 		this.id = id;
 	}
 	
-	public Join(String id, String password) {
+	public Join(String id, String password) throws NoSuchAlgorithmException {
 		this.id = id;
-		this.password = password;
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes());
+		String hex = String.format("%064x", new BigInteger(1, md.digest()));
+		this.password = hex;
 		
 	}
 	
-	public Join(String id, String password, String email, String phone, String gender) {
+	public Join(String id, String password, String email, String phone, String gender) throws NoSuchAlgorithmException {
 		this.id = id;
-		this.password = password;
 		this.email = email;
 		this.phone = phone;
 		this.gender = gender;
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes());
+		String hex = String.format("%064x", new BigInteger(1, md.digest()));
+		this.password = hex;
 	}
 	
 	
